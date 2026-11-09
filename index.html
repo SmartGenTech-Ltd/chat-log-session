@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Business - Local</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="whatsapp-container">
+        
+        <!-- VUE 1 : SESSION DE CHAT ACTIVE -->
+        <div class="view active" id="chatView">
+            <div class="chat-header">
+                <div class="header-left" onclick="goToHomeView()">
+                    <span class="back-arrow">&lt; 65</span>
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar">
+                    <div class="chat-header-info">
+                        <h2>Pharmacien</h2>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="call-icon-btn" onclick="startCall('video')">📹</button>
+                    <button class="call-icon-btn" onclick="startCall('audio')">📞</button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message received" onclick="openContextMenu(event, this)">
+                    <span class="message-text">const plusBtn = document.getElementById('plus-Btn');</span>
+                    <span class="time">10:12 ✓✓</span>
+                </div>
+            </div>
+
+            <!-- Sélecteur d'Emojis Global -->
+            <div class="emoji-picker-container" id="emojiPicker">
+                <div class="emoji-search"><input type="text" placeholder="Search Emoji" id="emojiSearchInput"></div>
+                <div class="emoji-grid" id="globalEmojiGrid">
+                    <span>😀</span><span>😃</span><span>😄</span><span>😁</span><span>😆</span><span>😅</span><span>😂</span><span>🤣</span>
+                    <span>😊</span><span>😇</span><span>🙂</span><span>🙃</span><span>😉</span><span>😌</span><span>😍</span><span>🥰</span>
+                    <span>👍</span><span>👎</span><span>✊</span><span>👊</span><span>❤️</span><span>🔥</span><span>💯</span><span>✨</span>
+                </div>
+            </div>
+
+            <!-- Menu Modal '+' -->
+            <div class="plus-menu" id="plusMenu">
+                <div class="menu-item" onclick="triggerAction('camera')"><div class="menu-icon" style="background:#ff2d55;">📷</div><span>Camera</span></div>
+                <div class="menu-item" onclick="triggerAction('photos')"><div class="menu-icon" style="background:#007aff;">🖼️</div><span>Photos</span></div>
+                <div class="menu-item" onclick="triggerAction('document')"><div class="menu-icon" style="background:#5856d6;">📄</div><span>Document</span></div>
+                <div class="menu-item" onclick="triggerAction('location')"><div class="menu-icon" style="background:#34c759;">📍</div><span>Location</span></div>
+                <div class="menu-item" onclick="triggerAction('contact')"><div class="menu-icon" style="background:#007aff;">👤</div><span>Contact</span></div>
+                <div class="menu-item" onclick="triggerAction('catalog')"><div class="menu-icon" style="background:#54656f;">🛍️</div><span>Catalog</span></div>
+                <div class="menu-item" onclick="triggerAction('quick')"><div class="menu-icon" style="background:#ff9500;">⚡</div><span>Quick replies</span></div>
+                <div class="menu-item" onclick="triggerAction('poll')"><div class="menu-icon" style="background:#ffcc00;">📊</div><span>Poll</span></div>
+                <div class="menu-item" onclick="triggerAction('event')"><div class="menu-icon" style="background:#ff3b30;">📅</div><span>Event</span></div>
+            </div>
+
+            <!-- Footer -->
+            <div class="chat-footer-container">
+                <div class="reply-preview" id="replyPreview">
+                    <div class="reply-content"><span class="reply-sender">Réponse à Pharmacien</span><p id="replyText">...</p></div>
+                    <button class="cancel-reply" onclick="cancelReply()">❌</button>
+                </div>
+                <div class="chat-input-bar">
+                    <button class="action-btn" id="plusBtn">➕</button>
+                    <div class="input-wrapper"><input type="text" id="messageInput" placeholder="Message" autocomplete="off"></div>
+                    <button class="action-btn" id="emojiToggleBtn">😊</button>
+                    <button class="action-btn" onclick="triggerAction('camera')">📷</button>
+                    <button class="action-btn" id="sendBtn">🎤</button>
+                </div>
+            </div>
+
+            <!-- Menu Contextuel Message -->
+            <div class="context-menu" id="contextMenu">
+                <div class="reaction-bar">
+                    <span onclick="addReaction('👍')">👍</span><span onclick="addReaction('❤️')">❤️</span><span onclick="addReaction('😂')">😂</span>
+                    <span onclick="addReaction('😮')">😮</span><span onclick="addReaction('😢')">😢</span><span onclick="addReaction('🙏')">🙏</span>
+                    <span onclick="addReaction('🔥')">🔥</span><span onclick="openEmojiPickerFromMenu()">➕</span>
+                </div>
+                <ul>
+                    <li onclick="replyMessage()"><span>↩️</span> Reply</li>
+                    <li onclick="forwardMessage()"><span>➡️</span> Forward</li>
+                    <li onclick="copyMessageText()"><span>📋</span> Copy</li>
+                    <li onclick="editMessage()"><span>✏️</span> Edit</li>
+                    <li onclick="addTextToNote()"><span>📝</span> Add text to note</li>
+                    <li onclick="showMsgInfo()"><span>ℹ️</span> Info</li>
+                    <li onclick="starMessage()"><span>⭐</span> Star</li>
+                    <li class="delete" onclick="deleteSelectedMessage()"><span>🗑️</span> Delete</li>
+                    <hr>
+                    <li onclick="clearAllMessagesInChat()" style="color:#ea0038; font-weight:bold;"><span>🧹</span> Clear all messages</li>
+                    <li onclick="showMoreOptions()"><span>⋯</span> More...</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- VUE 2 : ACCUEIL & SETTINGS -->
+        <div class="view" id="homeView">
+            <div class="home-header">
+                <h1 id="homeTitle">Chats</h1>
+                <div class="home-header-actions">
+                    <button class="top-icon-btn" onclick="alert('Caméra')">📷</button>
+                    <button class="top-icon-btn" onclick="alert('Nouveau chat')">➕</button>
+                </div>
+            </div>
+            
+            <div class="home-content" id="homeContent"></div>
+
+            <!-- Sous-panneau Settings Interactif -->
+            <div class="sub-panel" id="subPanel">
+                <div class="sub-panel-header">
+                    <button onclick="closeSubPanel()">❮</button>
+                    <h2 id="subPanelTitle">Titre</h2>
+                </div>
+                <div class="sub-panel-body" id="subPanelBody"></div>
+            </div>
+
+            <!-- Barre de navigation -->
+        <div class="bottom-nav" style="display:flex; justify-content:space-around; background:#fff; border-top:1px solid #ccc; padding:10px 0; position:absolute; bottom:0; width:100%;">
+    <div class="nav-item active" onclick="switchTab('status', 'Updates', this)" style="cursor:pointer; text-align:center;">Updates</div>
+    <div class="nav-item" onclick="switchTab('calls', 'Calls', this)" style="cursor:pointer; text-align:center;">Calls</div>
+    <div class="nav-item" onclick="switchTab('tools', 'Tools', this)" style="cursor:pointer; text-align:center;">Tools</div>
+    <div class="nav-item" onclick="switchTab('chats', 'Chats', this)" style="cursor:pointer; text-align:center;">Chats</div>
+    <div class="nav-item" onclick="switchTab('settings', 'Settings', this)" style="cursor:pointer; text-align:center;">Settings</div>
+</div>
+
+        <!-- Écran d'appel -->
+        <div class="call-screen" id="callScreen">
+            <div class="call-info">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" alt="Caller">
+                <h2 id="callTitle">Appel en cours...</h2>
+            </div>
+            <button class="call-btn end-call" onclick="endCall()">❌ Raccrocher</button>
+        </div>
+
+        <input type="file" id="cameraInput" accept="image/*" onchange="handleFileSelected(this, 'Camera')">
+        <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleFileSelected(this, 'Galerie')">
+        <input type="file" id="docInput" accept=".pdf,.doc,.docx,.txt" onchange="handleFileSelected(this, 'Document')">
+        <input type="file" id="contactInput" accept=".vcf" onchange="handleFileSelected(this, 'Contact')">
+        <input type="file" id="profilePicInput" style="display:none;" accept="image/*" onchange="handleFileSelected(this, 'Profile Picture')">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
